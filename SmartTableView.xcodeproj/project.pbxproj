@@ -17,6 +17,7 @@
 		E229551B1D4457EB005BA5F7 /* UITableView+SmartTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E229551A1D4457EB005BA5F7 /* UITableView+SmartTableView.swift */; };
 		E229551D1D445807005BA5F7 /* UITableViewCell+SmartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E229551C1D445807005BA5F7 /* UITableViewCell+SmartTableViewCell.swift */; };
 		E22955211D449FB9005BA5F7 /* SmartTestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E22955201D449FB9005BA5F7 /* SmartTestCell.swift */; };
+		E2B03A081D44EFF3007D1552 /* SmartTestCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B03A071D44EFF3007D1552 /* SmartTestCell2.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,7 @@
 		E229551A1D4457EB005BA5F7 /* UITableView+SmartTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+SmartTableView.swift"; sourceTree = "<group>"; };
 		E229551C1D445807005BA5F7 /* UITableViewCell+SmartTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableViewCell+SmartTableViewCell.swift"; sourceTree = "<group>"; };
 		E22955201D449FB9005BA5F7 /* SmartTestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartTestCell.swift; sourceTree = "<group>"; };
+		E2B03A071D44EFF3007D1552 /* SmartTestCell2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SmartTestCell2.swift; sourceTree = "<group>"; };
 		FB8AE3CFC0B8F01FD28481A7 /* Pods-SmartTableView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SmartTableView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SmartTableView/Pods-SmartTableView.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -94,6 +96,7 @@
 				E229550E1D445589005BA5F7 /* LaunchScreen.storyboard */,
 				E22955111D445589005BA5F7 /* Info.plist */,
 				E22955201D449FB9005BA5F7 /* SmartTestCell.swift */,
+				E2B03A071D44EFF3007D1552 /* SmartTestCell2.swift */,
 			);
 			path = SmartTableView;
 			sourceTree = "<group>";
@@ -236,6 +239,7 @@
 				E22955211D449FB9005BA5F7 /* SmartTestCell.swift in Sources */,
 				E22955061D445589005BA5F7 /* AppDelegate.swift in Sources */,
 				E229551D1D445807005BA5F7 /* UITableViewCell+SmartTableViewCell.swift in Sources */,
+				E2B03A081D44EFF3007D1552 /* SmartTestCell2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

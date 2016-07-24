@@ -10,7 +10,6 @@ import UIKit
 
 class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     var section: NSInteger = 0
-    var multiCellType = false
     var data: [NSObject]?
     var forward: AnyObject?
     var cellClass: AnyClass?
@@ -85,12 +84,9 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         if forward_.respondsToSelector(selector) {
             cell = forward_.performSelector(selector, withObject: tableView, withObject: indexPath).takeUnretainedValue() as? UITableViewCell
         }
-        var identifier = self.cellIdentifier
-        if multiCellType {
-            identifier = identifierForRowAtIndexPath(indexPath)
-        }
+        let identifier = identifierForRow(indexPath.row)
         if cell == nil {
-            cell = tableView.dequeueReusableCellWithIdentifier(identifier!)
+            cell = tableView.dequeueReusableCellWithIdentifier(identifier)
         }
         if cell == nil {
             let cellSelector = #selector(SmartTableViewImpl.cellClassForRowAtIndexPath(_:))
@@ -120,8 +116,14 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
-    func identifierForRowAtIndexPath(indexPath: NSIndexPath) -> String {
-        return "\(cellIdentifier)\(indexPath.row)"
+    func identifierForRow(row: Int) -> String {
+        if let forward_ = forward {
+            let selector = #selector(SmartTableViewImpl.identifierForRow(_:))
+            if forward_.respondsToSelector(selector) {
+                return (forward_.performSelector(selector, withObject: NSNumber(integer: row)).takeUnretainedValue() as! String)
+            }
+        }
+        return cellIdentifier!
     }
     
     func cellClassForRowAtIndexPath(indexPath: NSIndexPath) -> AnyClass {

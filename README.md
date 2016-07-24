@@ -20,7 +20,7 @@ pod 'SmartTableView', :git=>'https://github.com/matrixs/SmartTableView.git'
 
 ## Usage
 
-Use by including the follwing import:
+#Situation 1: TableView only contains a kind of UITableViewCell type:
 
 ```Swift
 var dataSource = Array<AnyClass>()
@@ -30,6 +30,29 @@ dataSource.append(/some data/)
 yourTableView.updateDataSource(dataSource)
 [yourTableView reloadData];
 ```
+#Situation 2: TableView contains multiple kinds of UITableViewCell type:
+
+```Swift
+var dataSource = Array<AnyClass>()
+tableView.registerClass(SmartTestCell.self, dataSource: dataSource, delegate: self, identifier: "CELL1")
+tableView.registerClass(SmartTestCell2.self, dataSource: dataSource, delegate: self, identifier: "CELL2")
+... //data manipulation
+dataSource.append(/some data/)
+yourTableView.updateDataSource(dataSource)
+[yourTableView reloadData];
+```
+Apart from this, you need to implement another method showed below: 
+```Swift
+func identifierForRow(row: NSNumber) -> String {
+    let dict = dataSource[row.integerValue] as! NSDictionary
+    if dict["type"]?.integerValue == 1 {
+        return "CELL1"
+    } else {
+        return "CELL2"
+    }
+}
+```
+
 And then in YourCustomCell class, you need implement below method:
 
 ```

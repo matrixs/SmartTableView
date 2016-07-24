@@ -1,5 +1,5 @@
 //
-//  SmartTestCell.swift
+//  SmartTestCell2.swift
 //  SmartTableView
 //
 //  Created by matrixs on 16/7/24.
@@ -7,13 +7,12 @@
 //
 
 import UIKit
-import SnapKit
 
-class SmartTestCell: UITableViewCell {
-    
+class SmartTestCell2: UITableViewCell {
+
     let contentLabel = UILabel()
     let smartImageView = UIImageView()
-
+    
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
@@ -21,7 +20,8 @@ class SmartTestCell: UITableViewCell {
         contentView.addSubview(smartImageView)
         smartImageView.contentMode = .Top
         smartImageView.snp_makeConstraints { (make) in
-            make.left.top.equalTo(self.contentView).offset(10)
+            make.top.equalTo(self.contentView).offset(10)
+            make.right.equalTo(self.contentView).offset(-10)
             make.width.equalTo(70)
             make.bottom.equalTo(-20).priority(100)
         }
@@ -31,8 +31,8 @@ class SmartTestCell: UITableViewCell {
         contentView.addSubview(contentLabel)
         contentLabel.snp_makeConstraints { (make) in
             make.top.equalTo(self.contentView).offset(10)
-            make.left.equalTo(smartImageView.snp_right).offset(10)
-            make.right.equalTo(self.contentView).offset(-10)
+            make.right.equalTo(smartImageView.snp_left).offset(-10)
+            make.left.equalTo(self.contentView).offset(10)
             make.bottom.equalTo(-60).priority(100)
         }
     }
@@ -44,4 +44,5 @@ class SmartTestCell: UITableViewCell {
     override func fillData(data: NSObject) {
         contentLabel.text = (data as! NSDictionary)["txt"] as? String
     }
+
 }
