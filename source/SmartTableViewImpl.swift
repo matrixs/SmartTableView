@@ -169,12 +169,12 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                             if firstAttribute == NSLayoutAttribute.Bottom {
                                 let bottom = fabs(constraint.constant)
                                 height += bottom
-                                objc_setAssociatedObject(subview, &Identifiers.BottomKey, bottom, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                                objc_setAssociatedObject(subview, &Identifiers.BottomKey, NSNumber(float: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                             }
                             if firstAttribute == NSLayoutAttribute.BottomMargin {
                                 let bottomMargin = fabs(constraint.constant)
                                 height += bottomMargin
-                                objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, bottomMargin, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                                objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, NSNumber(float: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                             }
                         }
                     }
@@ -184,26 +184,43 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                 }
             }
         } else {
-            return view.frame.origin.y + view.bounds.size.height
+            var height: CGFloat = 0
+            let array = view.constraints
+            for constraint in array {
+                if view == constraint.firstItem as! NSObject {
+                    let firstAttribute = constraint.firstAttribute
+                    if firstAttribute == NSLayoutAttribute.Bottom {
+                        let bottom = fabs(constraint.constant)
+                        height += bottom
+                        objc_setAssociatedObject(view, &Identifiers.BottomKey, NSNumber(float: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    }
+                    if firstAttribute == NSLayoutAttribute.BottomMargin {
+                        let bottomMargin = fabs(constraint.constant)
+                        height += bottomMargin
+                        objc_setAssociatedObject(view, &Identifiers.BottomMarginKey, NSNumber(float: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                    }
+                }
+            }
+            return view.frame.origin.y + view.bounds.size.height + height
         }
         return maxMarginBottom
     }
     
     func updateLayout(cell: UITableViewCell) {
         cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView!.bounds), CGRectGetHeight(cell.bounds))
+        cell.updateConstraints()
         cell.layoutIfNeeded()
     }
     
     func calcCellHeight() {
-        if cell == nil {
-            if self.cellClass == nil {
-                cell = tableView?.dequeueReusableCellWithIdentifier(cellIdentifier!)
-            } else {
-                cell = (self.cellClass as! UITableViewCell.Type).init(style: .Default, reuseIdentifier: cellIdentifier)
-            }   
-        }
         if let data_ = data {
-            for obj in data_ {
+            for (index, obj) in data_.enumerate() {
+                let identifier = identifierForRow(index)
+                if cell == nil || self.cellIdentifier == nil || (self.cellIdentifier! != identifier) {
+                    cell = tableView?.dequeueReusableCellWithIdentifier(identifierForRow(index))
+                    constraintsCached = false
+                }
+                self.cellIdentifier = identifier
                 calculateCellHeight(cell!, data: obj)
             }
         }
