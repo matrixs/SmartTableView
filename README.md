@@ -53,7 +53,8 @@ func identifierForRow(row: NSNumber) -> String {
 }
 ```
 
-And then in YourCustomCell class, you need implement below method:
+##Next
+In YourCustomCell class, you need implement below method:
 
 ```
 override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
