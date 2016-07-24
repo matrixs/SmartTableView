@@ -67,12 +67,10 @@ override func fillData(data: NSObject) {
     //TODO
 }
 
-#Important
-If you want to set contentView bottom padding, give the constraint a low priority, such as 100.
-
 ```
 
-
+#Important
+If you want to set contentView bottom padding, give the constraint a low priority, such as 100.
 
 ## Contributing
 See the CONTRIBUTING file for how to help out.
