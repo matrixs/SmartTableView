@@ -49,4 +49,4 @@ See the CONTRIBUTING file for how to help out.
 
 ## License
 
-Pop is released under a MIT License. See LICENSE file for details.
+SmartTableView is released under a MIT License. See LICENSE file for details.
