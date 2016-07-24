@@ -116,6 +116,15 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         return 0
     }
     
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if let forward_ = forward {
+            let selector = #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))
+            if forward_.respondsToSelector(selector) {
+                forward_.performSelector(selector, withObject: tableView, withObject: indexPath)
+            }
+        }
+    }
+    
     func identifierForRow(row: Int) -> String {
         if let forward_ = forward {
             let selector = #selector(SmartTableViewImpl.identifierForRow(_:))
