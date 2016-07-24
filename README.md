@@ -20,7 +20,7 @@ pod 'SmartTableView', :git=>'https://github.com/matrixs/SmartTableView.git'
 
 ## Usage
 
-#Situation 1: TableView only contains a kind of UITableViewCell type:
+##Situation 1: TableView only contains a kind of UITableViewCell type:
 
 ```Swift
 var dataSource = Array<AnyClass>()
@@ -30,7 +30,7 @@ dataSource.append(/some data/)
 yourTableView.updateDataSource(dataSource)
 [yourTableView reloadData];
 ```
-#Situation 2: TableView contains multiple kinds of UITableViewCell type:
+##Situation 2: TableView contains multiple kinds of UITableViewCell type:
 
 ```Swift
 var dataSource = Array<AnyClass>()
