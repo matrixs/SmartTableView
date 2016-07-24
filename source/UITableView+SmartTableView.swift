@@ -68,26 +68,26 @@ extension UITableView {
         self.tableViewImpl.bindDataSource(dataSource, delegate: delegate)
     }
     
-    func updateDataSource(dataSource: [NSObject]) {
+    public func updateDataSource(dataSource: [NSObject]) {
         self.tableViewImpl.data = dataSource
     }
     
-    func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
+    public func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         config()
         self.tableViewImpl.registerNib(nib, dataSource: dataSource, delegate: delegate, identifier: identifier)
     }
     
-    func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject) {
+    public func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject) {
         config()
         self.tableViewImpl.registerNib(nib, dataSource: dataSource, delegate: delegate)
     }
     
-    func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
+    public func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         config()
         self.tableViewImpl.registerClass(cellClass, dataSource: dataSource, delegate: delegate, identifier: identifier)
     }
     
-    func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject) {
+    public func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject) {
         config()
         self.tableViewImpl.registerClass(cellClass, dataSource: dataSource, delegate: delegate)
     }
