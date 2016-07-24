@@ -191,8 +191,10 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                 cell = (self.cellClass as! UITableViewCell.Type).init(style: .Default, reuseIdentifier: cellIdentifier)
             }   
         }
-        for obj in data! {
-            calculateCellHeight(cell!, data: obj)
+        if let data_ = data {
+            for obj in data_ {
+                calculateCellHeight(cell!, data: obj)
+            }
         }
     }
 }
