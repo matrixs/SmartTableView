@@ -145,7 +145,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         if let forward_ = forward {
             let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAtIndexPath:))
             if forward_.respondsToSelector(selector) {
-                customCell = true
+                customCell = false
             }
         }
         if customCell {
