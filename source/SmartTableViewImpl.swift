@@ -141,7 +141,16 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     func calculateCellHeight(cell: UITableViewCell, data: NSObject) {
-        cell.fillData(data)
+        var customCell = true
+        if let forward_ = forward {
+            let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAtIndexPath:))
+            if forward_.respondsToSelector(selector) {
+                customCell = true
+            }
+        }
+        if customCell {
+            cell.fillData(data)
+        }
         updateLayout(cell)
         let height = maxMarginBottomInSubviews(cell.contentView) + 1
         heightArray.append(height)
