@@ -83,6 +83,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAtIndexPath:))
         if forward_.respondsToSelector(selector) {
             cell = forward_.performSelector(selector, withObject: tableView, withObject: indexPath).takeUnretainedValue() as? UITableViewCell
+            return cell!
         }
         let identifier = identifierForRow(indexPath.row)
         if cell == nil {
