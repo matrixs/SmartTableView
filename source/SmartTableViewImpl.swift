@@ -224,6 +224,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     func calcCellHeight() {
         if let data_ = data {
+            heightArray.removeAll()
             for (index, obj) in data_.enumerate() {
                 let identifier = identifierForRow(index)
                 if cell == nil || self.cellIdentifier == nil || (self.cellIdentifier! != identifier) {
