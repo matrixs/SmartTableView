@@ -215,7 +215,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     func updateLayout(cell: UITableViewCell) {
-        cell.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView!.bounds), CGRectGetHeight(cell.bounds))
+        cell.contentView.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView!.bounds), CGRectGetHeight(cell.bounds))
         cell.updateConstraints()
         cell.layoutIfNeeded()
     }
