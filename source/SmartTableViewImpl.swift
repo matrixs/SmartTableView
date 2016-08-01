@@ -152,6 +152,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
             cell.fillData(data)
         }
         updateLayout(cell)
+        setPreferredMaxWidthOfUILabelForView(cell.contentView)
         let height = maxMarginBottomInSubviews(cell.contentView) + 1
         heightArray.append(height)
         constraintsCached = true
@@ -219,6 +220,21 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         cell.updateConstraints()
         cell.layoutIfNeeded()
     }
+    
+    func setPreferredMaxWidthOfUILabelForView(view: UIView) {
+        if view.subviews.count > 0 {
+            for childView in view.subviews {
+                setPreferredMaxWidthOfUILabelForView(childView)
+            }
+        } else {
+            if view.isKindOfClass(UILabel.self) {
+                let label = view as! UILabel
+                label.layoutIfNeeded()
+                label.preferredMaxLayoutWidth = label.bounds.size.width
+            }
+        }
+    }
+
     
     func calcCellHeight() {
         if let data_ = data {
