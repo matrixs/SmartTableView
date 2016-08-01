@@ -44,7 +44,11 @@ extension UITableViewCell {
         if self.isKindOfClass(UITableViewCell.self) {
 //            let constraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: self.bounds.size.width)
 //            self.contentView.addConstraint(constraint)
+            let type = self.accessoryType
+            let view = self.accessoryView
             setPreferredMaxWidthOfUILabelForView(self.contentView)
+            self.accessoryType = type
+            self.accessoryView = view
 //            self.contentView.removeConstraint(constraint)
         }
     }
