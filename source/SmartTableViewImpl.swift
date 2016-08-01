@@ -215,7 +215,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     }
     
     func updateLayout(cell: UITableViewCell) {
-        tableView?.layoutIfNeeded()
+        tableView?.superview?.layoutIfNeeded()
         cell.contentView.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView!.bounds), CGRectGetHeight(cell.bounds))
         cell.updateConstraints()
         setPreferredMaxWidthOfUILabelForView(cell.contentView)
@@ -230,7 +230,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         } else {
             if view.isKindOfClass(UILabel.self) {
                 let label = view as! UILabel
-                label.layoutIfNeeded()
+                label.superview?.layoutIfNeeded()
                 label.preferredMaxLayoutWidth = label.bounds.size.width
             }
         }
