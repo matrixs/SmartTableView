@@ -172,7 +172,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                         height += CGFloat(bottomMarginValue.floatValue)
                     }
                 } else {
-                    let array = subview.constraints
+                    let array = view.constraints
                     for constraint in array {
                         if subview == constraint.firstItem as! NSObject {
                             let firstAttribute = constraint.firstAttribute
@@ -188,28 +188,29 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                             }
                         }
                     }
+                    let subViewArray = subview.constraints
+                    for constraint in subViewArray {
+                        if subview == constraint.firstItem as! NSObject {
+                            let firstAttribute = constraint.firstAttribute
+                            if firstAttribute == NSLayoutAttribute.Bottom {
+                                let bottom = fabs(constraint.constant)
+                                maxMarginBottom += bottom
+                                objc_setAssociatedObject(subview, &Identifiers.BottomKey, NSNumber(float: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                            }
+                            if firstAttribute == NSLayoutAttribute.BottomMargin {
+                                let bottomMargin = fabs(constraint.constant)
+                                maxMarginBottom += bottomMargin
+                                objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, NSNumber(float: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                            }
+                        }
+                    }
+
                 }
                 if height > maxMarginBottom {
                     maxMarginBottom = height
                 }
             }
         }
-//        let array = view.constraints
-//        for constraint in array {
-//            if view == constraint.firstItem as! NSObject {
-//                let firstAttribute = constraint.firstAttribute
-//                if firstAttribute == NSLayoutAttribute.Bottom {
-//                    let bottom = fabs(constraint.constant)
-//                    maxMarginBottom += bottom
-//                    objc_setAssociatedObject(view, &Identifiers.BottomKey, NSNumber(float: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-//                }
-//                if firstAttribute == NSLayoutAttribute.BottomMargin {
-//                    let bottomMargin = fabs(constraint.constant)
-//                    maxMarginBottom += bottomMargin
-//                    objc_setAssociatedObject(view, &Identifiers.BottomMarginKey, NSNumber(float: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-//                }
-//            }
-//        }
         return maxMarginBottom
     }
     
