@@ -152,10 +152,10 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
             cell.fillData(data)
         }
                     let constraint = NSLayoutConstraint(item: cell.contentView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: tableView!.bounds.size.width)
-                    cell.contentView.addConstraint(constraint)
+        constraint.active = true
         updateLayout(cell)
         setPreferredMaxWidthOfUILabelForView(cell.contentView)
-        cell.contentView.removeConstraint(constraint)
+        constraint.active = false
         let height = maxMarginBottomInSubviews(cell.contentView) + 1
         heightArray.append(height)
         constraintsCached = true
