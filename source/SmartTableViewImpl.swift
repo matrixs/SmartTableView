@@ -205,7 +205,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                         }
                     }
                 }
-                height = height + view.frame.origin.y + view.bounds.size.height
+                height = height + subview.frame.origin.y + subview.bounds.size.height
                 if height > maxMarginBottom {
                     maxMarginBottom = height
                 }
