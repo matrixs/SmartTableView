@@ -42,10 +42,10 @@ extension UITableViewCell {
     func smartLayoutSubviews() {
         smartLayoutSubviews()
         if self.isKindOfClass(UITableViewCell.self) {
-            let constraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: self.bounds.size.width)
-            self.contentView.addConstraint(constraint)
+//            let constraint = NSLayoutConstraint(item: self.contentView, attribute: NSLayoutAttribute.Width, relatedBy: NSLayoutRelation.Equal, toItem: nil, attribute: NSLayoutAttribute.Width, multiplier: 1, constant: self.bounds.size.width)
+//            self.contentView.addConstraint(constraint)
             setPreferredMaxWidthOfUILabelForView(self.contentView)
-            self.contentView.removeConstraint(constraint)
+//            self.contentView.removeConstraint(constraint)
         }
     }
     
