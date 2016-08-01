@@ -46,6 +46,8 @@ extension UITableViewCell {
 //            self.contentView.addConstraint(constraint)
             let type = self.accessoryType
             let view = self.accessoryView
+            self.accessoryType = .None
+            self.accessoryView = nil
             setPreferredMaxWidthOfUILabelForView(self.contentView)
             self.accessoryType = type
             self.accessoryView = view
