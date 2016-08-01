@@ -161,7 +161,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         var maxMarginBottom: CGFloat = 0
         if view.subviews.count > 0 {
             for subview in view.subviews {
-                var height = maxMarginBottomInSubviews(subview)
+                var height: CGFloat = 0
                 if constraintsCached {
                     let bottomValue = objc_getAssociatedObject(subview, &Identifiers.BottomKey)
                     if bottomValue != nil {
