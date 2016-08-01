@@ -172,7 +172,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                         height += CGFloat(bottomMarginValue.floatValue)
                     }
                 } else {
-                    let array = view.constraints
+                    let array = subview.constraints
                     for constraint in array {
                         if subview == constraint.firstItem as! NSObject {
                             let firstAttribute = constraint.firstAttribute
