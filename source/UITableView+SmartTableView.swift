@@ -68,7 +68,7 @@ extension UITableView {
         self.tableViewImpl.bindDataSource(dataSource, delegate: delegate)
     }
     
-    public func updateDataSource(dataSource: [NSObject]) {
+    public func sma_updateDataSource(dataSource: [NSObject]) {
         self.tableViewImpl.data?.removeAll()
         self.tableViewImpl.data?.appendContentsOf(dataSource)
     }

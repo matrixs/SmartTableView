@@ -25,7 +25,7 @@ class ViewController: UIViewController {
         dataSource.append(["txt":"ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss\nssssssss\nssssssss\nssssssss\nssssssss\ns\ns", "type": 1])
         dataSource.append(["txt":"ssssssss\nssssssss\nssssssss\nssssssss\nssssssss\nssssssss\nssssssss\nssssssss\n\n\nssssssss\n\n\nssssssss\n\n\nssssssss", "type": 2])
         dataSource.append(["txt":"ssssssssas\nssssssss\nsas\nssssssss\nas\n\nssssssss\n\nasdasd\nssssssss\nssssssssas\n\nasdas\n\n\nssssssss\nasd\nssssssss\n\nasdasd\nssssssss\nweqw\ne\nssssssss", "type": 1])
-        tableView.updateDataSource(dataSource)
+        tableView.sma_updateDataSource(dataSource)
         tableView.reloadData()
     }
     
