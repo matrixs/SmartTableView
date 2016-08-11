@@ -25,14 +25,14 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         static var BottomMarginKey = "BottomMarginKey"
     }
     
-    func bindDataSource(dataSource: Array<NSObject>, delegate: AnyObject) {
+    func bindDataSource(dataSource: [NSObject], delegate: AnyObject) {
         tableView?.dataSource = self
         tableView?.delegate = self
         forward = delegate
         data = dataSource
     }
     
-    func registerClass(cellClass: AnyClass, dataSource: Array<NSObject>, delegate: AnyObject) {
+    func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject) {
         if cellIdentifier == nil {
             cellIdentifier = Identifiers.defaultIdentifier
         }
@@ -41,12 +41,12 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         self.cellClass = cellClass
     }
     
-    func registerClass(cellClass: AnyClass, dataSource: Array<NSObject>, delegate: AnyObject, identifier: String) {
+    func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         self.cellIdentifier = identifier
         registerClass(cellClass, dataSource: dataSource, delegate: delegate)
     }
     
-    func registerNib(nib: UINib, dataSource: Array<NSObject>, delegate: AnyObject) {
+    func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject) {
         if cellIdentifier == nil {
             cellIdentifier = Identifiers.defaultIdentifier
         }
@@ -54,7 +54,7 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         tableView?.registerNib(nib, forCellReuseIdentifier: cellIdentifier!)
     }
     
-    func registerNib(nib: UINib, dataSource: Array<NSObject>, delegate: AnyObject, identifier: String) {
+    func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         self.cellIdentifier = identifier
         registerNib(nib, dataSource: dataSource, delegate: delegate)
     }
