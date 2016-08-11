@@ -69,7 +69,8 @@ extension UITableView {
     }
     
     public func updateDataSource(dataSource: [NSObject]) {
-        self.tableViewImpl.data = dataSource
+        self.tableViewImpl.data?.removeAll()
+        self.tableViewImpl.data?.appendContentsOf(dataSource)
     }
     
     public func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
