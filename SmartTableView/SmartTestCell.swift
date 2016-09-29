@@ -19,17 +19,17 @@ class SmartTestCell: UITableViewCell {
         
         smartImageView.image = UIImage(named: "test")
         contentView.addSubview(smartImageView)
-        smartImageView.contentMode = .Top
-        smartImageView.snp_makeConstraints { (make) in
+        smartImageView.contentMode = .top
+        smartImageView.snp.makeConstraints { (make) in
             make.left.top.equalTo(self.contentView).offset(10)
             make.width.equalTo(70)
             make.bottom.equalTo(-20).priority(100)
         }
-        contentLabel.textColor = UIColor.blueColor()
-        contentLabel.font = UIFont.systemFontOfSize(20)
+        contentLabel.textColor = UIColor.blue
+        contentLabel.font = UIFont.systemFont(ofSize: 20)
         contentLabel.numberOfLines = 0
         contentView.addSubview(contentLabel)
-        contentLabel.snp_makeConstraints { (make) in
+        contentLabel.snp.makeConstraints { (make) in
             make.top.equalTo(self.contentView).offset(10)
             make.left.equalTo(smartImageView.snp_right).offset(10)
             make.right.equalTo(self.contentView).offset(-10)

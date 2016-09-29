@@ -11,7 +11,7 @@ import UIKit
 extension UITableViewCell {
     
     public func fillData(data: NSObject) {
-        NSException(name: "SmartTableViewException", reason: "You must implement your fillData methods in you custom UITableViewCell class", userInfo: nil).raise()
+        NSException(name: NSExceptionName(rawValue: "SmartTableViewException"), reason: "You must implement your fillData methods in you custom UITableViewCell class", userInfo: nil).raise()
     }
 }
 

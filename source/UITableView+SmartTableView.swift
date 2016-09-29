@@ -25,14 +25,11 @@ extension UITableView {
         }
     }
     
-    public override class func initialize() {
-        struct Static {
-            static var token: dispatch_once_t = 0
-        }
+    open override class func initialize() {
         if  self !== UITableView.self {
             return
         }
-        dispatch_once(&Static.token) { 
+        let _: () = {
             let reloadDataSEL = #selector(reloadData)
             let reloadDataMethod = class_getInstanceMethod(self, reloadDataSEL)
             let reloadDataIMP = method_getImplementation(reloadDataMethod)
@@ -47,12 +44,12 @@ extension UITableView {
             } else {
                 method_exchangeImplementations(reloadDataMethod, smartReloadDataMethod)
             }
-        }
+        }()
     }
     
     func smartReloadData() {
-        let selector = #selector(UITableViewDelegate.tableView(_:heightForRowAtIndexPath:))
-        if tableViewImpl.forward == nil || !tableViewImpl.forward!.respondsToSelector(selector){
+        let selector = #selector(UITableViewDelegate.tableView(_:heightForRowAt:))
+        if tableViewImpl.forward == nil || !tableViewImpl.forward!.responds(to: selector){
             tableViewImpl.calcCellHeight()
         }
         smartReloadData()
@@ -65,31 +62,31 @@ extension UITableView {
     
     func bindDataSource(dataSource: [NSObject], delegate: AnyObject) {
         config()
-        self.tableViewImpl.bindDataSource(dataSource, delegate: delegate)
+        self.tableViewImpl.bindDataSource(dataSource: dataSource, delegate: delegate)
     }
     
     public func sma_updateDataSource(dataSource: [NSObject]) {
         self.tableViewImpl.data?.removeAll()
-        self.tableViewImpl.data?.appendContentsOf(dataSource)
+        self.tableViewImpl.data?.append(contentsOf: dataSource)
     }
     
     public func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         config()
-        self.tableViewImpl.registerNib(nib, dataSource: dataSource, delegate: delegate, identifier: identifier)
+        self.tableViewImpl.registerNib(nib: nib, dataSource: dataSource, delegate: delegate, identifier: identifier)
     }
     
     public func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject) {
         config()
-        self.tableViewImpl.registerNib(nib, dataSource: dataSource, delegate: delegate)
+        self.tableViewImpl.registerNib(nib: nib, dataSource: dataSource, delegate: delegate)
     }
     
     public func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         config()
-        self.tableViewImpl.registerClass(cellClass, dataSource: dataSource, delegate: delegate, identifier: identifier)
+        self.tableViewImpl.registerClass(cellClass: cellClass, dataSource: dataSource, delegate: delegate, identifier: identifier)
     }
     
     public func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject) {
         config()
-        self.tableViewImpl.registerClass(cellClass, dataSource: dataSource, delegate: delegate)
+        self.tableViewImpl.registerClass(cellClass: cellClass, dataSource: dataSource, delegate: delegate)
     }
 }

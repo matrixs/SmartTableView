@@ -36,101 +36,105 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
         if cellIdentifier == nil {
             cellIdentifier = Identifiers.defaultIdentifier
         }
-        bindDataSource(dataSource, delegate: delegate)
-        tableView?.registerClass(cellClass, forCellReuseIdentifier: cellIdentifier!)
+        bindDataSource(dataSource: dataSource, delegate: delegate)
+        tableView?.register(cellClass, forCellReuseIdentifier: cellIdentifier!)
         self.cellClass = cellClass
     }
     
     func registerClass(cellClass: AnyClass, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         self.cellIdentifier = identifier
-        registerClass(cellClass, dataSource: dataSource, delegate: delegate)
+        registerClass(cellClass: cellClass, dataSource: dataSource, delegate: delegate)
     }
     
     func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject) {
         if cellIdentifier == nil {
             cellIdentifier = Identifiers.defaultIdentifier
         }
-        bindDataSource(dataSource, delegate: delegate)
-        tableView?.registerNib(nib, forCellReuseIdentifier: cellIdentifier!)
+        bindDataSource(dataSource: dataSource, delegate: delegate)
+        tableView?.register(nib, forCellReuseIdentifier: cellIdentifier!)
     }
     
     func registerNib(nib: UINib, dataSource: [NSObject], delegate: AnyObject, identifier: String) {
         self.cellIdentifier = identifier
-        registerNib(nib, dataSource: dataSource, delegate: delegate)
+        registerNib(nib: nib, dataSource: dataSource, delegate: delegate)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         guard let forward_ = forward else { return 1 }
-        let selector = #selector(UITableViewDataSource.numberOfSectionsInTableView(_:))
-        if forward_.respondsToSelector(selector) {
-            return ((forward_.performSelector(selector, withObject: nil).takeUnretainedValue() as? NSNumber)?.integerValue)!
+        let selector = #selector(UITableViewDataSource.numberOfSections)
+        if forward_.responds!(to: selector) {
+            return ((forward_.perform(selector).takeUnretainedValue() as? NSNumber)?.intValue)!
         }
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let forward_ = forward else { return 0 }
         let selector = #selector(UITableViewDataSource.tableView(_:numberOfRowsInSection:))
-        if forward_.respondsToSelector(selector) {
-            return ((forward_.performSelector(selector, withObject: tableView, withObject: section).takeUnretainedValue() as? NSNumber)?.integerValue)!
+        if forward_.responds(to: selector) {
+            if let num = forward_.perform(selector, with: tableView, with: section).takeUnretainedValue() as? NSNumber {
+               return num.intValue
+            } else {
+                return 0
+            }
         }
         return data?.count ?? 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell: UITableViewCell?
         guard let forward_ = forward else { return UITableViewCell() }
-        let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAtIndexPath:))
-        if forward_.respondsToSelector(selector) {
-            cell = forward_.performSelector(selector, withObject: tableView, withObject: indexPath).takeUnretainedValue() as? UITableViewCell
+        let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAt:))
+        if forward_.responds(to: selector) {
+            cell = forward_.perform(selector, with: tableView, with: indexPath).takeUnretainedValue() as? UITableViewCell
             return cell!
         }
-        let identifier = identifierForRow(indexPath.row)
+        let identifier = identifierForRow(row: indexPath.row)
         if cell == nil {
-            cell = tableView.dequeueReusableCellWithIdentifier(identifier)
+            cell = tableView.dequeueReusableCell(withIdentifier: identifier)
         }
         if cell == nil {
-            let cellSelector = #selector(SmartTableViewImpl.cellClassForRowAtIndexPath(_:))
-            if forward_.respondsToSelector(cellSelector) {
-                cell = (forward_.performSelector(cellSelector, withObject: indexPath).takeUnretainedValue()) as? UITableViewCell
-                let cellClass = (forward_.performSelector(cellSelector, withObject: indexPath).takeUnretainedValue()) as? UITableViewCell.Type
-                cell = cellClass!.init(style: .Default, reuseIdentifier: identifier)
+            let cellSelector = #selector(SmartTableViewImpl.cellClassForRowAtIndexPath(indexPath:))
+            if forward_.responds(to: cellSelector) {
+                cell = (forward_.perform(cellSelector, with: indexPath).takeUnretainedValue()) as? UITableViewCell
+                let cellClass = (forward_.perform(cellSelector, with: indexPath).takeUnretainedValue()) as? UITableViewCell.Type
+                cell = cellClass!.init(style: .default, reuseIdentifier: identifier)
             } else if self.cellClass != nil {
-                cell = (self.cellClass as? UITableViewCell.Type)!.init(style: .Default, reuseIdentifier: identifier)
+                cell = (self.cellClass as? UITableViewCell.Type)!.init(style: .default, reuseIdentifier: identifier)
             } else {
-                cell = (cellClassForRowAtIndexPath(indexPath) as! UITableViewCell.Type).init(style: .Default, reuseIdentifier: identifier)
+                cell = (cellClassForRowAtIndexPath(indexPath: indexPath as NSIndexPath) as! UITableViewCell.Type).init(style: .default, reuseIdentifier: identifier)
             }
         }
-        cell?.fillData(data![indexPath.row])
+        cell?.fillData(data: data![indexPath.row])
         return cell!
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let forward_ = forward else { return 0 }
-        let selector = #selector(UITableViewDelegate.tableView(_:heightForRowAtIndexPath:))
-        if forward_.respondsToSelector(selector) {
-            return CGFloat((forward_.performSelector(selector, withObject: tableView, withObject: indexPath).takeUnretainedValue() as? NSNumber)!.floatValue)
+        let selector = #selector(UITableViewDelegate.tableView(_:heightForRowAt:))
+        if forward_.responds(to: selector) {
+            return CGFloat((forward_.perform(selector, with: tableView, with: indexPath).takeUnretainedValue() as? NSNumber)!.floatValue)
         }
         if indexPath.row < heightArray.count && heightArray[indexPath.row] > 0 {
             return heightArray[indexPath.row]
         }
         return 0
     }
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let forward_ = forward {
-            let selector = #selector(UITableViewDelegate.tableView(_:didSelectRowAtIndexPath:))
-            if forward_.respondsToSelector(selector) {
-                forward_.performSelector(selector, withObject: tableView, withObject: indexPath)
+            let selector = #selector(UITableViewDelegate.tableView(_:didSelectRowAt:))
+            if forward_.responds(to: selector) {
+                forward_.perform(selector, with: tableView, with: indexPath)
             }
         }
     }
     
     func identifierForRow(row: Int) -> String {
         if let forward_ = forward {
-            let selector = #selector(SmartTableViewImpl.identifierForRow(_:))
-            if forward_.respondsToSelector(selector) {
-                return (forward_.performSelector(selector, withObject: NSNumber(integer: row)).takeUnretainedValue() as! String)
+            let selector = #selector(SmartTableViewImpl.identifierForRow(row:))
+            if forward_.responds(to: selector) {
+                return (forward_.perform(selector, with: NSNumber(value: row)).takeUnretainedValue() as! String)
             }
         }
         return cellIdentifier!
@@ -143,16 +147,16 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     func calculateCellHeight(cell: UITableViewCell, data: NSObject) {
         var customCell = true
         if let forward_ = forward {
-            let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAtIndexPath:))
-            if forward_.respondsToSelector(selector) {
+            let selector = #selector(UITableViewDataSource.tableView(_:cellForRowAt:))
+            if forward_.responds(to: selector) {
                 customCell = false
             }
         }
         if customCell {
-            cell.fillData(data)
+            cell.fillData(data: data)
         }
-        updateLayout(cell)
-        let height = maxMarginBottomInSubviews(cell.contentView) + 1
+        updateLayout(cell: cell)
+        let height = maxMarginBottomInSubviews(view: cell.contentView) + 1
         heightArray.append(height)
         constraintsCached = true
     }
@@ -163,28 +167,28 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
             for subview in view.subviews {
                 var height: CGFloat = 0
                 if constraintsCached {
-                    let bottomValue = objc_getAssociatedObject(subview, &Identifiers.BottomKey)
+                    let bottomValue = objc_getAssociatedObject(subview, &Identifiers.BottomKey) as? NSNumber
                     if bottomValue != nil {
-                        height += CGFloat(bottomValue.floatValue)
+                        height += CGFloat(bottomValue!.floatValue)
                     }
-                    let bottomMarginValue = objc_getAssociatedObject(subview, &Identifiers.BottomMarginKey)
+                    let bottomMarginValue = objc_getAssociatedObject(subview, &Identifiers.BottomMarginKey) as? NSNumber
                     if bottomMarginValue != nil {
-                        height += CGFloat(bottomMarginValue.floatValue)
+                        height += CGFloat(bottomMarginValue!.floatValue)
                     }
                 } else {
                     let array = view.constraints
                     for constraint in array {
                         if subview == constraint.firstItem as! NSObject {
                             let firstAttribute = constraint.firstAttribute
-                            if firstAttribute == NSLayoutAttribute.Bottom {
+                            if firstAttribute == NSLayoutAttribute.bottom {
                                 let bottom = fabs(constraint.constant)
                                 height += bottom
-                                objc_setAssociatedObject(subview, &Identifiers.BottomKey, NSNumber(float: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                                objc_setAssociatedObject(subview, &Identifiers.BottomKey, NSNumber(value: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                             }
-                            if firstAttribute == NSLayoutAttribute.BottomMargin {
+                            if firstAttribute == NSLayoutAttribute.bottomMargin {
                                 let bottomMargin = fabs(constraint.constant)
                                 height += bottomMargin
-                                objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, NSNumber(float: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                                objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, NSNumber(value: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                             }
                         }
                     }
@@ -193,15 +197,15 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
                 for constraint in array {
                     if subview == constraint.firstItem as! NSObject {
                         let firstAttribute = constraint.firstAttribute
-                        if firstAttribute == NSLayoutAttribute.Bottom {
+                        if firstAttribute == NSLayoutAttribute.bottom {
                             let bottom = fabs(constraint.constant)
                             height += bottom
-                            objc_setAssociatedObject(subview, &Identifiers.BottomKey, NSNumber(float: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                            objc_setAssociatedObject(subview, &Identifiers.BottomKey, NSNumber(value: Float(bottom)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                         }
-                        if firstAttribute == NSLayoutAttribute.BottomMargin {
+                        if firstAttribute == NSLayoutAttribute.bottomMargin {
                             let bottomMargin = fabs(constraint.constant)
                             height += bottomMargin
-                            objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, NSNumber(float: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+                            objc_setAssociatedObject(subview, &Identifiers.BottomMarginKey, NSNumber(value: Float(bottomMargin)), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
                         }
                     }
                 }
@@ -216,19 +220,19 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     
     func updateLayout(cell: UITableViewCell) {
         tableView?.superview?.layoutIfNeeded()
-        cell.contentView.bounds = CGRectMake(0, 0, CGRectGetWidth(tableView!.bounds), CGRectGetHeight(cell.bounds))
+        cell.contentView.bounds = CGRect(x: 0, y: 0, width: tableView!.bounds.width, height: cell.bounds.height)
         cell.updateConstraints()
-        setPreferredMaxWidthOfUILabelForView(cell.contentView)
+        setPreferredMaxWidthOfUILabelForView(view: cell.contentView)
         cell.layoutIfNeeded()
     }
     
     func setPreferredMaxWidthOfUILabelForView(view: UIView) {
         if view.subviews.count > 0 {
             for childView in view.subviews {
-                setPreferredMaxWidthOfUILabelForView(childView)
+                setPreferredMaxWidthOfUILabelForView(view: childView)
             }
         } else {
-            if view.isKindOfClass(UILabel.self) {
+            if view.isKind(of: UILabel.self) {
                 let label = view as! UILabel
                 label.superview?.layoutIfNeeded()
                 label.preferredMaxLayoutWidth = label.bounds.size.width
@@ -240,14 +244,14 @@ class SmartTableViewImpl: NSObject, UITableViewDataSource, UITableViewDelegate {
     func calcCellHeight() {
         if let data_ = data {
             heightArray.removeAll()
-            for (index, obj) in data_.enumerate() {
-                let identifier = identifierForRow(index)
+            for (index, obj) in data_.enumerated() {
+                let identifier = identifierForRow(row: index)
                 if cell == nil || self.cellIdentifier == nil || (self.cellIdentifier! != identifier) {
-                    cell = tableView?.dequeueReusableCellWithIdentifier(identifierForRow(index))
+                    cell = tableView?.dequeueReusableCell(withIdentifier: identifierForRow(row: index))
                     constraintsCached = false
                 }
                 self.cellIdentifier = identifier
-                calculateCellHeight(cell!, data: obj)
+                calculateCellHeight(cell: cell!, data: obj)
             }
         }
     }
